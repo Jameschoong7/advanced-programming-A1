@@ -6,16 +6,39 @@
 
 using namespace std;
 
-class User{
+constexpr int ARRAY_SIZE = 50;
+
+struct MeasurementRecords{
+    double height;
+    double weight;
+    double bmi;
+};
+
+class User:public Person{
 
     private:
         double height;
         double weight;
         double bmi;
         string personalGoal;
+
+        //Measurement Record
+        MeasurementRecords history[ARRAY_SIZE];
+        int historyCounter;
+
         WorkoutPlan workoutPlan;
         DietPlan dietPlan;
-    User()
+    
+    public:
+        User();
+        User(string n, int a, char g, double h, double w, string pg);
+        ~User();
 
+        void setValue(string name, int age, char gender, double h, double w, double bmi, string pg);
+        void getValue(double &height, double &wwight, double &bmi, string &personalGoal);
+        void print();
+        void updateMeasurement(double w,double h);
+        
+        void displayProgressReport();
 
-}
+};

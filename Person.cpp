@@ -5,7 +5,7 @@ using namespace std;
 
 Person::Person(){
     name = "User";
-    age = 21;
+    age = 0;
     gender = 'M';
 }
 
