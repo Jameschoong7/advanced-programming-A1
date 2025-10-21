@@ -8,12 +8,12 @@ struct WorkoutActivity{
     string activity;
     int intensityLevel;
     double caloriesBurnPerminute;
-
+    double durations;
 };
 
 class WorkoutPlan{
     private:
-        WorkoutActivity activity[ARRAY_SIZE];
+        WorkoutActivity activities[ARRAY_SIZE];
 
         int numActivities;
     public:
