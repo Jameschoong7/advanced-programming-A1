@@ -20,6 +20,7 @@ class DietPlan{
         DietPlan();
         ~DietPlan();
         void addMeal(const MealItem& newMeal);
+        void clearMeal();
         void displayPlan();
         double getTotalCalories();
 };
