@@ -1,5 +1,6 @@
 #include <iostream>
 #include "DietPlan.h"
+#include "config.h"
 using namespace std;
 
 
@@ -11,15 +12,12 @@ DietPlan::DietPlan(){
 
 
 DietPlan::~DietPlan(){
-    cout<<"Destructor is called"<<endl;
+    //cout<<"Destructor is called"<<endl;
 }
 
 //function to add meal 
 void DietPlan::addMeal(const MealItem &meal){
-    meals[numMeals].mealType = meal.mealType;
-    meals[numMeals].food = meal.food;
-    meals[numMeals].calorie = meal.calorie;
-    
+    meals[numMeals] = meal;
     cout<<"Meal added:\n"
         <<"Meal Type: "<<  meals[numMeals].mealType
         <<"\nFood: "<< meals[numMeals].food

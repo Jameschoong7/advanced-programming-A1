@@ -1,8 +1,7 @@
 #pragma once
 #include <iostream>
+#include "config.h"
 using namespace std;
-
-constexpr int ARRAY_SIZE = 50;
 
 struct WorkoutActivity{
     string activity;

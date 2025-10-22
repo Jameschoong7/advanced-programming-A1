@@ -1,4 +1,4 @@
-#pragma once
+#include "config.h"
 #include <iostream>
 #include "WorkoutPlan.h"
 
@@ -9,7 +9,7 @@ WorkoutPlan::WorkoutPlan(){
 }
 
 WorkoutPlan::~WorkoutPlan(){
-    cout<<"Destructor is called"<<endl;
+    //cout<<"Destructor is called"<<endl;
 }
 
 //function to add activity

@@ -4,9 +4,10 @@
 #include "WorkoutPlan.h"
 #include "DietPlan.h"
 
+#include "config.h"
 using namespace std;
 
-constexpr int ARRAY_SIZE = 50;
+
 
 struct MeasurementRecords{
     double height;
@@ -34,11 +35,13 @@ class User:public Person{
         User(string n, int a, char g, double h, double w, string pg);
         ~User();
 
-        void setValue(string name, int age, char gender, double h, double w, double bmi, string pg);
-        void getValue(double &height, double &wwight, double &bmi, string &personalGoal);
+        void setValue(string name, int age, char gender, double w, double h, double bmi, string pg);
+        void getValue(double &weight, double &height, double &bmi, string &personalGoal);
         void print();
         void updateMeasurement(double w,double h);
         
         void displayProgressReport();
 
+
+        void generateRecommendedDietPlan(const MealItem allMeals[], int mealCount);
 };

@@ -2,10 +2,11 @@
 #include <iostream>
 #include "DietPlan.h"
 #include "WorkoutPlan.h"
-#include "User.h"
+#include "User.h" 
+#include "config.h"
 using namespace std;
 
-constexpr int ARRAY_SIZE = 50;
+
 
 struct FileOperation{
     MealItem allMeals[ARRAY_SIZE];
@@ -17,5 +18,7 @@ struct FileOperation{
     void loadDietPlanFile(string fileName, int &size);
     void loadWorkoutPlanFile(string fileName, int &size);
     void loadUser(string fileName, int &size);
+
+    
 
 };

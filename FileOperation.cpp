@@ -1,6 +1,7 @@
 #include <fstream>
 #include <iostream>
 #include "FileOperation.h"
+#include "User.h"
 #include <string>
 using namespace std;
 
