@@ -17,9 +17,20 @@ int main(){
     fo.loadUser(userFile,userSize);
     fo.loadWorkoutPlanFile(workoutPlansFile,workoutPlanSize);
 
-   
+   cout << "--- Please Select a User ---" << endl;
+    for (int i = 0; i < userSize; i++) {
+        
+        cout << (i + 1) << ". " << fo.allUser[i].getName() << endl;
+    }
+    
+    int selection;
+    selection = getValidateInt("Enter User Number: ",1,userSize);
+    int selectedIndex = selection - 1;
 
+    User& selectedUser = fo.allUser[selectedIndex];
+    
+    cout << "You selected: " << selectedUser.getName() << endl;
 
-
-
+    selectedUser.generateRecommendedDietPlan(fo.allMeals,dietInfoSize);
+    selectedUser.generateRecommendedWorkoutPlan(fo.allWorkout,workoutPlanSize);
 }

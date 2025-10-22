@@ -39,7 +39,16 @@ void User::setValue(string name, int age, char gender,double w, double h, double
     personalGoal = pg;
 }
 
-void getValue(double &weight, double &height, double &bmi, string &personalGoal);
+void User::getValue(string &name, int &age, char &gender, double &weight, double &height, double &bmi, string &personalGoal){
+    Person::getValue(name,age,gender);
+    weight = this->weight;
+    height = this->height;
+    bmi = weight / (height * height);
+    personalGoal = this->personalGoal;
+}
+
+
+
 void User::print(){
     Person::print();
     cout<<"Weight: "<<weight<<" kg"
@@ -68,6 +77,12 @@ void User::displayProgressReport(){
             <<"\nBMI: "<<record.bmi<<endl;
     }
 }
+
+string User::getName(){
+    return this->name;
+
+}
+
 
 void User::generateRecommendedDietPlan(const MealItem allMeals[], int mealCount){
     srand(time(0)); 
@@ -169,8 +184,110 @@ void User::generateRecommendedDietPlan(const MealItem allMeals[], int mealCount)
     cout<<"New recommended plan: \n";
     dietPlan.displayPlan();
     double totalCalories= dietPlan.getTotalCalories();
-    cout<<"Total calories: "<<totalCalories;
+    cout<<"\nTotal calories: "<<totalCalories;
 
 
 
+}
+
+void User::generateRecommendedWorkoutPlan(const WorkoutActivity allActivities[], int activityCount){
+    srand(time(0));
+    double minBurnTarget = 0.0;
+    double maxBurnTarget = 0.0;
+    int minIntensity = 1;
+    int maxIntensity = 4;
+
+
+    if (gender == 'M') { // Max burn is 500
+        if (personalGoal == "lose") {
+            minBurnTarget = 450;
+            maxBurnTarget = 500;
+            minIntensity = 3;
+            maxIntensity = 4;
+        } else if (personalGoal == "maintain") {
+            minBurnTarget = 300;
+            maxBurnTarget = 400;
+            minIntensity = 2;
+            maxIntensity = 3;
+        } else { // "gain"
+            minBurnTarget = 150;
+            maxBurnTarget = 250;
+            minIntensity = 1;
+            maxIntensity = 2;
+        }
+    } else { // 'F', Max burn is 400
+        if (personalGoal == "lose") {
+            minBurnTarget = 350;
+            maxBurnTarget = 400;
+            minIntensity = 3;
+            maxIntensity = 4;
+        } else if (personalGoal == "maintain") {
+            minBurnTarget = 200;
+            maxBurnTarget = 300;
+            minIntensity = 2;
+            maxIntensity = 3;
+        } else { // "gain"
+            minBurnTarget = 100;
+            maxBurnTarget = 150;
+            minIntensity = 1;
+            maxIntensity = 2;
+        }
+    }
+
+    cout << "\nTarget Calorie Burn: Between " << minBurnTarget 
+         << " and " << maxBurnTarget << " calories." << endl;
+
+
+    //filter activity based on intensity level
+    WorkoutActivity suitableActivities[ARRAY_SIZE];
+    int suitableActivityCount = 0;
+
+    for (int i = 0; i < activityCount; i++) {
+        int currentIntensity = allActivities[i].intensityLevel;
+        if (currentIntensity >= minIntensity && currentIntensity <= maxIntensity) {
+            suitableActivities[suitableActivityCount] = allActivities[i];
+            suitableActivityCount++;
+        }
+    }
+
+    // Check min 2 activity for routines
+    if (suitableActivityCount < 2) {
+        cout << "Sorry, not enough different activities were found (need at least 2) "
+             << "to build a routine for your goal." << endl;
+        return; // Exit the function
+    }
+
+    //randomly pick 2 activity
+    int index1 = rand() % suitableActivityCount;
+    int index2 = rand() % suitableActivityCount;
+
+    // Keep picking a new index2 until it's different from index1
+    while (index1 == index2) {
+        index2 = rand() % suitableActivityCount;
+    }
+
+    WorkoutActivity chosenActivity1 = suitableActivities[index1];
+    WorkoutActivity chosenActivity2 = suitableActivities[index2];
+
+    //Pick a random total calorie goal from our target range (min + random of max-min)
+    double randomBurnGoal = minBurnTarget + (rand() % (int)(maxBurnTarget - minBurnTarget + 1));
+
+    //Divide the calorie goal between the two activities (e.g., 50/50 split)
+    double goal1 = randomBurnGoal * 0.5;
+    double goal2 = randomBurnGoal * 0.5;
+
+    //Calculate the duration for each activity
+    int duration1 = goal1 / chosenActivity1.caloriesBurnPerminute;
+    int duration2 = goal2 / chosenActivity2.caloriesBurnPerminute;
+
+    workoutPlan.clearPlan();
+    workoutPlan.addActivity(chosenActivity1, duration1);
+    workoutPlan.addActivity(chosenActivity2, duration2);
+
+    //Print the result
+    cout << "\n--- Your New Recommended Workout Routine ---" << endl;
+    this->workoutPlan.displayLog();
+    cout << "------------------------------------------" << endl;
+    cout << "Estimated Total Calories Burned: " 
+         << this->workoutPlan.getTotalCaloriesBurned() << endl;
 }

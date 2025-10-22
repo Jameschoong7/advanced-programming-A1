@@ -28,28 +28,31 @@ void DietPlan::addMeal(const MealItem &meal){
 
 //function to clear meal list
 void DietPlan::clearMeal(){
-    for(MealItem &meal:meals){
-        meal.mealType="";
-        meal.food="";
-        meal.calorie=0;
+    for (int i =0;i<numMeals;i++){
+        meals[i].mealType ="";
+         meals[i].food="";
+         meals[i].calorie=0;
     }
+  
     numMeals =0;
 }
 
 //function to display diet plan
 void DietPlan::displayPlan(){
-    for(const MealItem &meal:meals){
-        cout<<"Meal Type: "<<  meal.mealType
-        <<"\nFood: "<< meal.food
-        <<"\nCalorie: "<< meal.calorie<<endl;
+    for (int i =0;i<numMeals;i++){
+        cout<<"Meal Type: "<<  meals[i].mealType
+        <<"\nFood: "<< meals[i].food
+        <<"\nCalorie: "<< meals[i].calorie<<endl;
     }
+    
 }
 
 //function to get total meal plan calories
 double DietPlan::getTotalCalories(){
     double calories = 0.0;
-    for(const MealItem &meal:meals){
-        calories += meal.calorie;
+    for (int i =0;i<numMeals;i++){
+        calories += meals[i].calorie;
     }
+    
     return calories;
 }

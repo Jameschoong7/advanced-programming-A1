@@ -29,22 +29,37 @@ void WorkoutPlan::addActivity(const WorkoutActivity& newActivity, int minutes){
 
 }
 
+//function to clear workout plan
+void WorkoutPlan::clearPlan() {
+    for (int i = 0; i < numActivities; i++) {
+        activities[i].activity = "";
+        activities[i].intensityLevel = 0;
+        activities[i].caloriesBurnPerminute = 0.0;
+         activities[numActivities].durations =0;
+    }
+
+    numActivities = 0;
+
+    cout << "Workout plan cleared successfully." << endl;
+}
+
+
 //function to show activity added
 void WorkoutPlan::displayLog(){
 
-    for(const WorkoutActivity &activity:activities){
-        cout<<"\nActivity: "<< activity.activity
-        <<"\nIntensity Level (1-4): "<<activity.intensityLevel
-        <<"\nCalories Burn Per Minute: "<<activity.caloriesBurnPerminute<<endl;
-
+    for (int i = 0; i < numActivities; i++) {
+        cout << "\nActivity: " << activities[i].activity
+             << "\nIntensity Level (1-4): " << activities[i].intensityLevel
+             << "\nCalories Burn Per Minute: " << activities[i].caloriesBurnPerminute
+             <<"\nDuration: "<< activities[i].durations << endl;
     }
 }
 
 //function to calculate total calorie burnt
 double WorkoutPlan::getTotalCaloriesBurned(){
-    double totalCalories =0.0;
-    for(const WorkoutActivity &activity:activities){
-        totalCalories+=(activity.caloriesBurnPerminute * activity.durations);
+    double totalCalories = 0.0;
+    for (int i = 0; i < numActivities; i++) {
+        totalCalories += activities[i].caloriesBurnPerminute * activities[i].durations;
     }
     return totalCalories;
 }

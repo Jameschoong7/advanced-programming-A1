@@ -36,12 +36,13 @@ class User:public Person{
         ~User();
 
         void setValue(string name, int age, char gender, double w, double h, double bmi, string pg);
-        void getValue(double &weight, double &height, double &bmi, string &personalGoal);
+        void getValue(string &name, int &age, char &gender,double &weight, double &height, double &bmi, string &personalGoal);
         void print();
         void updateMeasurement(double w,double h);
         
         void displayProgressReport();
-
+        string getName();
 
         void generateRecommendedDietPlan(const MealItem allMeals[], int mealCount);
+        void generateRecommendedWorkoutPlan(const WorkoutActivity allActivities[], int activityCount);
 };

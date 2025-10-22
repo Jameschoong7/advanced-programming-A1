@@ -19,6 +19,7 @@ class WorkoutPlan{
         WorkoutPlan();
         ~WorkoutPlan();
         void addActivity(const WorkoutActivity& newActivity, int minutes);
+        void clearPlan();
         void displayLog();
         double getTotalCaloriesBurned();
 };

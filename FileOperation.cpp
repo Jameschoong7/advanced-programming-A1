@@ -40,9 +40,9 @@ void FileOperation::loadWorkoutPlanFile(string fileName, int &size){
     string temp;
     while(counter<ARRAY_SIZE&& getline(inData,allWorkout[counter].activity,',')){
         getline(inData,temp,',');
-        allWorkout[counter].caloriesBurnPerminute = stoi(temp);
+        allWorkout[counter].intensityLevel = stoi(temp);
         getline(inData,temp);
-        allMeals[counter].calorie = stod(temp);
+        allWorkout[counter].caloriesBurnPerminute = stod(temp);
         counter++;
     }
     inData.close();
