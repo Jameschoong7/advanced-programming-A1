@@ -70,11 +70,16 @@ void User::updateMeasurement(double w,double h){
 }
 
 void User::displayProgressReport(){
-    cout<<"Previous Measurement Records (Max: 50)\n";
-    for(const MeasurementRecords &record:history){
-        cout<<"Weight: "<<record.weight
-            <<"\nHeight: "<<record.height
-            <<"\nBMI: "<<record.bmi<<endl;
+    if(historyCounter!=0){
+        cout<<"Previous Measurement Records (Max: 50)\n";
+        for(int i =0; i<historyCounter;i++){
+            cout<<"Weight: "<<history[i].weight
+                <<"\nHeight: "<<history[i].height
+                <<"\nBMI: "<<history[i].bmi<<endl;
+        }
+    }
+    else{
+        cout<<"No History Records..."<<endl;
     }
 }
 
@@ -82,7 +87,39 @@ string User::getName(){
     return this->name;
 
 }
+void User::getDietPlan(){
+    dietPlan.displayPlan();
 
+}
+void User::getWorkoutPlan(){
+    workoutPlan.displayLog();
+}
+
+void User::compareProgress() {
+    cout << "\n--- Progress Comparison ---" << endl;
+
+    // Check if there is at least one history record
+    if (historyCounter == 0) {
+        cout << "No past measurements recorded yet." << endl;
+        cout << "Your current measurements are:" << endl;
+        cout << "Weight: " << weight << " kg" << endl;
+        cout << "Height: " << height << " m" << endl;
+        cout << "BMI: " << bmi << endl;
+        return;
+    }
+
+    // Compare the first record (baseline) with the current
+    cout << "             " << "STARTING" << "     " << "CURRENT" << endl;
+    cout << "-----------------------------------" << endl;
+    cout << "Weight (kg): " << history[0].weight << "      -> " << weight << endl;
+    cout << "Height (m):  " << history[0].height << "      -> " << height << endl;
+    cout << "BMI:         " << history[0].bmi << "      -> " << bmi << endl;
+
+    // Calculate and show the change
+    double weightChange = weight - history[0].weight;
+    
+    cout << "\nChange in Weight: " << weightChange << " kg" << endl;
+}
 
 void User::generateRecommendedDietPlan(const MealItem allMeals[], int mealCount){
     srand(time(0)); 
@@ -290,4 +327,131 @@ void User::generateRecommendedWorkoutPlan(const WorkoutActivity allActivities[],
     cout << "------------------------------------------" << endl;
     cout << "Estimated Total Calories Burned: " 
          << this->workoutPlan.getTotalCaloriesBurned() << endl;
+}
+
+
+//function for user to add meal manually
+void User::addMealManually(const MealItem allMeals[], int mealCount) {
+    cout << "\n--- Select a Meal to Add ---" << endl;
+    
+    //Display all available meals from the "database"
+    for (int i = 0; i < mealCount; i++) {
+        cout << (i + 1) << ". " << allMeals[i].mealType << " - " 
+             << allMeals[i].food << " (" << allMeals[i].calorie << " cal)" << endl;
+    }
+
+
+    //get user input
+    int choice = getValidateInt("Enter meal number: ", 1, mealCount);
+    MealItem selectedMeal = allMeals[choice - 1];
+
+
+    //add meal to user plan
+    dietPlan.addMeal(selectedMeal);
+
+    double minCalories = 0.0;
+    double maxCalories = 0.0;
+
+    if (gender == 'M') {
+        if (personalGoal == "lose") {
+            minCalories = 1500;
+            maxCalories = 1800;
+        } else if (personalGoal == "maintain") {
+            minCalories = 1800;
+            maxCalories = 2100;
+        } else { 
+            minCalories = 2100;
+            maxCalories = 2400;
+        }
+    } else { 
+        if (personalGoal == "lose") {
+            minCalories = 1200;
+            maxCalories = 1400;
+        } else if (personalGoal == "maintain") {
+            minCalories = 1400;
+            maxCalories = 1700;
+        } else { 
+            minCalories = 1700;
+            maxCalories = 2000;
+        }
+    }
+
+    double totalCalories = dietPlan.getTotalCalories();
+    cout << "\nYour plan's new total: " << totalCalories << " calories." << endl;
+
+    if (totalCalories > maxCalories) {
+        cout << "Suggestion: Your total calories are above your "
+             << "recommended max of " << maxCalories << ".\n"
+             << "Consider substituting a high-calorie item." << endl;
+    } else if (totalCalories < minCalories) {
+        cout << "Suggestion: Your total calories are below your "
+             << "recommended min of " << minCalories << ".\n"
+             << "Consider adding another meal or snack." << endl;
+    } else {
+        cout << "Your plan is within the recommended calorie range. Great!" << endl;
+    }
+}
+
+
+//function for user to add workout plan normally
+void User::addWorkoutManually(const WorkoutActivity allActivities[], int activityCount) {
+    cout << "\n--- Select One or More Workouts to Log ---" << endl;
+
+    //Display all available activities
+    for (int i = 0; i < activityCount; i++) {
+        cout << (i + 1) << ". " << allActivities[i].activity
+             << " (Intensity: " << allActivities[i].intensityLevel 
+             << ", " << allActivities[i].caloriesBurnPerminute << " cal/min)" << endl;
+    }
+
+    // Select Multiple wokout
+    char more = 'Y';
+    do {
+        int choice = getValidateInt("Enter activity number: ", 1, activityCount);
+        WorkoutActivity selectedActivity = allActivities[choice - 1];
+
+        int duration = getValidateInt("Enter duration (in minutes): ", 1, 300);
+        workoutPlan.addActivity(selectedActivity, duration);
+
+        cout << "Added " << selectedActivity.activity 
+             << " for " << duration << " minutes.\n";
+
+        cout << "Add another activity? (Y/N): ";
+        cin >> more;
+        more = toupper(more);
+        cin.ignore();
+
+    } while (more == 'Y');
+
+    //Feedback
+    double maxBurn = (gender == 'M') ? 500 : 400;
+    double totalBurn = workoutPlan.getTotalCaloriesBurned();
+
+    cout << "\n--- Workout Summary ---" << endl;
+    workoutPlan.displayLog();
+    cout << "Total Calories Burned: " << totalBurn << " cal" << endl;
+
+    //Suggestions
+    if (totalBurn > maxBurn) {
+        cout << "\nYou have exceeded the daily recommended "
+             << "maximum burn of " << maxBurn << " calories.\n"
+             << "Please ensure proper recovery and hydration." << endl;
+    } else {
+        cout << "\nWorkout logged successfully within safe limits!" << endl;
+    }
+}
+
+// Friend function definition for operator<<
+ostream& operator<<(ostream& os, const User& user) {
+    
+    os<<"Name: "<<user.name<<endl;
+    os<<"Age: "<<user.age<<endl;
+    os<<"Gender: "<<user.gender<<endl;
+    
+    os << "Weight: " << user.weight << " kg" << endl;
+    os << "Height: " << user.height << " m" << endl;
+    os << "BMI: " << user.bmi << endl;
+    os << "Personal Goal: " << user.personalGoal << endl;
+    
+    return os; 
 }

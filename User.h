@@ -42,7 +42,13 @@ class User:public Person{
         
         void displayProgressReport();
         string getName();
-
+        void getDietPlan();
+        void getWorkoutPlan();
+        void compareProgress();
         void generateRecommendedDietPlan(const MealItem allMeals[], int mealCount);
         void generateRecommendedWorkoutPlan(const WorkoutActivity allActivities[], int activityCount);
+
+        void addMealManually(const MealItem allMeals[], int mealCount);
+        void addWorkoutManually(const WorkoutActivity allActivities[], int activityCount);
+        friend ostream& operator<<(ostream& os, const User& user);
 };

@@ -39,12 +39,16 @@ void DietPlan::clearMeal(){
 
 //function to display diet plan
 void DietPlan::displayPlan(){
-    for (int i =0;i<numMeals;i++){
-        cout<<"Meal Type: "<<  meals[i].mealType
-        <<"\nFood: "<< meals[i].food
-        <<"\nCalorie: "<< meals[i].calorie<<endl;
+    if(numMeals!=0){
+        for (int i =0;i<numMeals;i++){
+            cout<<"Meal Type: "<<  meals[i].mealType
+            <<"\nFood: "<< meals[i].food
+            <<"\nCalorie: "<< meals[i].calorie<<endl;
+        }
     }
-    
+    else{
+        cout<<"No Diet Plan yet..."<<endl;
+    }
 }
 
 //function to get total meal plan calories

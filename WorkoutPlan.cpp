@@ -46,12 +46,16 @@ void WorkoutPlan::clearPlan() {
 
 //function to show activity added
 void WorkoutPlan::displayLog(){
-
+    if(numActivities!=0){
     for (int i = 0; i < numActivities; i++) {
         cout << "\nActivity: " << activities[i].activity
              << "\nIntensity Level (1-4): " << activities[i].intensityLevel
              << "\nCalories Burn Per Minute: " << activities[i].caloriesBurnPerminute
              <<"\nDuration: "<< activities[i].durations << endl;
+        }
+    }
+    else{
+        cout<<"No Workout Plan Yet..."<<endl;
     }
 }
 
